@@ -208,7 +208,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--fn);background:var(--bg)
     <div class="lg-top">
       <div class="lg-logo">💕</div>
       <div class="lg-title">Hello Baby</div>
-      <div class="lg-sub">our private little world</div>
+      <div class="lg-sub">Your private little world</div>
     </div>
     <div class="lg-fields">
       <div class="lg-fi"><input type="text" id="nameIn" placeholder="Your name (first time only)" autocomplete="name" spellcheck="false"/></div>
@@ -359,8 +359,9 @@ function show(scr) {
 const initTimer = setTimeout(() => { clearTimeout(initTimer); show(lgScr); }, 4000);
 (async () => {
   try {
-    const { data: { session } } = await sb.auth.getSession();
+    const { data: { session }, error } = await sb.auth.getSession();
     clearTimeout(initTimer);
+    if (error) { show(lgScr); return; }
     if (session?.user) { me = session.user; show(chScr); initChat(); }
     else show(lgScr);
   } catch(e) { clearTimeout(initTimer); show(lgScr); }
@@ -499,12 +500,15 @@ async function send(text, type) {
   const t = (text || '').trim();
   if (!t || !me) return;
   const name = me.user_metadata?.display_name || me.email.split('@')[0];
-  await sb.from('messages').insert({
-    user_id: me.id, sender_email: me.email,
-    sender_name: name, text: t,
-    msg_type: type || 'text',
-    created_at: new Date().toISOString()
-  });
+  try {
+    const { error } = await sb.from('messages').insert({
+      user_id: me.id, sender_email: me.email,
+      sender_name: name, text: t,
+      msg_type: type || 'text'
+      // created_at is set automatically by the server — no 409 conflicts
+    });
+    if (error) console.error('Send error:', error);
+  } catch(e) { console.error('Send failed:', e); }
 }
 
 function sendFromInput() {
@@ -564,8 +568,7 @@ imgFileIn.addEventListener('change', async () => {
       user_id: me.id, sender_email: me.email,
       sender_name: name,
       text: dataUrl,
-      msg_type: 'image',
-      created_at: new Date().toISOString()
+      msg_type: 'image'
     });
     imgFileIn.value = '';
   };
@@ -676,14 +679,28 @@ G('resetModal').addEventListener('click', e => { if (e.target === G('resetModal'
 
 async function doSignOut() {
   closeModal('soModal');
-  await sb.auth.signOut();
+  try { await sb.auth.signOut(); } catch(e) {}
+  // Nuke every possible stored session
+  try {
+    Object.keys(localStorage).forEach(k => { if(k.includes('supabase') || k.includes('sb-')) localStorage.removeItem(k); });
+    Object.keys(sessionStorage).forEach(k => { if(k.includes('supabase') || k.includes('sb-')) sessionStorage.removeItem(k); });
+  } catch(e) {}
+  me = null;
+  if (channel) { try { sb.removeChannel(channel); } catch(e) {} channel = null; }
+  loaded = false;
+  msgsEl.querySelectorAll('.ch-row,.ch-date').forEach(e => e.remove());
+  emptyEl.style.display = '';
+  show(lgScr);
 }
 
 async function doReset() {
   closeModal('resetModal');
-  // Delete all messages from Supabase
-  await sb.from('messages').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-  // Clear UI
+  try {
+    // Delete all messages - use gt on created_at (epoch 0 = everything)
+    const { error } = await sb.from('messages').delete().gt('created_at', '1970-01-01T00:00:00.000Z');
+    if (error) console.error('Reset error:', error);
+  } catch(e) { console.error(e); }
+  // Always clear UI regardless
   msgsEl.querySelectorAll('.ch-row,.ch-date').forEach(e => e.remove());
   emptyEl.style.display = '';
 }

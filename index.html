@@ -8,222 +8,167 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="Hello Baby"/>
-  <title>Hello Baby 💕</title>
+  <title>Hello Baby</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --violet:      #6d28d9;
-      --violet-mid:  #7c3aed;
-      --violet-light:#8b5cf6;
-      --pink:        #ec4899;
-      --bg:          #0f0a1e;
-      --bg2:         #1a1230;
-      --bg3:         #231a40;
-      --surface:     #2d2252;
-      --border:      rgba(139,92,246,0.18);
-      --text:        #f1eeff;
-      --text2:       #a899d4;
-      --text3:       #6b5fa0;
-      --font:        'DM Sans', sans-serif;
-      --font-d:      'DM Serif Display', serif;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --v:#7c3aed;--vd:#5b21b6;--vl:#8b5cf6;--pk:#ec4899;
+      --bg:#0f0a1e;--bg2:#1a1230;--bg3:#231a40;--sf:#2d2252;
+      --br:rgba(139,92,246,.18);--t:#f1eeff;--t2:#a899d4;--t3:#6b5fa0;
+      --fn:'DM Sans',sans-serif;--fd:'DM Serif Display',serif;
     }
-    html, body { height: 100%; overflow: hidden; font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-
-    /* SCREENS */
-    .screen { position: fixed; inset: 0; display: flex; flex-direction: column; transition: opacity .3s, transform .3s; }
-    .screen.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
-
+    html,body{height:100%;overflow:hidden;font-family:var(--fn);background:var(--bg);color:var(--t);-webkit-font-smoothing:antialiased}
+    .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .3s,transform .3s}
+    .screen.hidden{opacity:0;pointer-events:none;transform:translateY(10px)}
     /* SPLASH */
-    #splash { align-items: center; justify-content: center; gap: 16px; background: var(--bg); }
-    .splash-logo { width: 88px; height: 88px; background: linear-gradient(135deg, var(--violet-mid), var(--pink)); border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 42px; box-shadow: 0 20px 60px rgba(124,58,237,.5); animation: glow 2s ease-in-out infinite; }
-    @keyframes glow { 0%,100%{box-shadow:0 20px 60px rgba(124,58,237,.5)} 50%{box-shadow:0 20px 80px rgba(236,72,153,.6)} }
-    .splash-title { font-family: var(--font-d); font-size: 32px; }
-    .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--violet-light); border-radius: 50%; animation: spin .8s linear infinite; margin-top: 8px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
+    #splash{align-items:center;justify-content:center;gap:16px}
+    .slogo{width:88px;height:88px;background:linear-gradient(135deg,var(--v),var(--pk));border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:42px;box-shadow:0 20px 60px rgba(124,58,237,.5);animation:glow 2s ease-in-out infinite}
+    @keyframes glow{0%,100%{box-shadow:0 20px 60px rgba(124,58,237,.5)}50%{box-shadow:0 20px 80px rgba(236,72,153,.6)}}
+    .stitle{font-family:var(--fd);font-size:32px}
+    .spin{width:24px;height:24px;border:2px solid var(--br);border-top-color:var(--vl);border-radius:50%;animation:sp .8s linear infinite;margin-top:8px}
+    @keyframes sp{to{transform:rotate(360deg)}}
     /* LOGIN */
-    #login { align-items: center; justify-content: center; padding: 20px; background: var(--bg); overflow-y: auto; }
-    .card { width: 100%; max-width: 400px; background: var(--bg2); border: 1px solid var(--border); border-radius: 28px; padding: 36px 28px 32px; }
-    .card-logo { width: 72px; height: 72px; background: linear-gradient(135deg, var(--violet-mid), var(--pink)); border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 34px; margin: 0 auto 20px; box-shadow: 0 12px 40px rgba(124,58,237,.45); }
-    .card-title { font-family: var(--font-d); font-size: 28px; text-align: center; margin-bottom: 4px; }
-    .card-sub { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 28px; }
-    .fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
-    .field-wrap { position: relative; }
-    .field-wrap input {
-      width: 100%; background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px 16px; font-family: var(--font);
-      font-size: 15px; color: var(--text); outline: none;
-      transition: border-color .2s, box-shadow .2s; -webkit-appearance: none;
-    }
-    .field-wrap input::placeholder { color: var(--text3); }
-    .field-wrap input:focus { border-color: var(--violet-light); box-shadow: 0 0 0 3px rgba(139,92,246,.15); }
-    .eye-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text3); font-size: 16px; padding: 4px; }
-    .hint { font-size: 12px; color: var(--text3); margin: 6px 0 16px; line-height: 1.5; }
-    .err { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3); border-radius: 12px; padding: 10px 14px; font-size: 13px; color: #fca5a5; margin-bottom: 14px; display: none; line-height: 1.4; }
-    .err.on { display: block; }
-    .btn-main { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--violet-mid), var(--pink)); border: none; border-radius: 14px; font-family: var(--font); font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; transition: opacity .2s, transform .15s; }
-    .btn-main:active { transform: scale(.98); }
-    .btn-main:disabled { opacity: .55; cursor: not-allowed; }
-    .btn-main .bspinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto; }
-    .btn-main.loading .blabel { display: none; }
-    .btn-main.loading .bspinner { display: block; }
-    .card-foot { font-size: 12px; color: var(--text3); text-align: center; margin-top: 20px; }
-
-    /* Name field slide */
-    .name-wrap { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .3s, opacity .3s; }
-    .name-wrap.on { max-height: 70px; opacity: 1; }
-    .name-wrap .field-wrap { margin-bottom: 12px; }
-
+    #login{align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+    .card{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--br);border-radius:28px;padding:36px 28px 32px}
+    .clogo{width:72px;height:72px;background:linear-gradient(135deg,var(--v),var(--pk));border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 20px;box-shadow:0 12px 40px rgba(124,58,237,.45)}
+    .ctitle{font-family:var(--fd);font-size:28px;text-align:center;margin-bottom:4px}
+    .csub{font-size:13px;color:var(--t2);text-align:center;margin-bottom:28px}
+    .fields{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+    .fw{position:relative}
+    .fw input{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:14px 16px;font-family:var(--fn);font-size:15px;color:var(--t);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+    .fw input::placeholder{color:var(--t3)}
+    .fw input:focus{border-color:var(--vl);box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+    .eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--t3);font-size:16px;padding:4px}
+    .hint{font-size:12px;color:var(--t3);margin-bottom:14px;line-height:1.5}
+    .err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:10px 14px;font-size:13px;color:#fca5a5;margin-bottom:14px;display:none;line-height:1.4}
+    .err.on{display:block}
+    .btnm{width:100%;padding:15px;background:linear-gradient(135deg,var(--v),var(--pk));border:none;border-radius:14px;font-family:var(--fn);font-size:15px;font-weight:600;color:#fff;cursor:pointer;transition:opacity .2s,transform .15s}
+    .btnm:active{transform:scale(.98)}
+    .btnm:disabled{opacity:.55;cursor:not-allowed}
+    .btnm .bs{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;margin:0 auto}
+    .btnm.loading .bl{display:none}
+    .btnm.loading .bs{display:block}
+    .cfoot{font-size:12px;color:var(--t3);text-align:center;margin-top:20px}
     /* CHAT */
-    #chat { background: var(--bg); }
-
-    /* Header */
-    .c-header { flex-shrink: 0; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); display: flex; align-items: center; gap: 12px; }
-    .avs { position: relative; width: 50px; height: 36px; flex-shrink: 0; }
-    .av { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; position: absolute; border: 2px solid var(--bg2); }
-    .av1 { background: linear-gradient(135deg, var(--violet-mid), var(--violet-light)); color: #fff; left: 0; top: 2px; }
-    .av2 { background: linear-gradient(135deg, var(--pink), #f472b6); color: #fff; left: 18px; top: 2px; }
-    .hinfo { flex: 1; min-width: 0; }
-    .hname { font-size: 16px; font-weight: 600; }
-    .hsub { font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
-    .dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pdot 2s ease-in-out infinite; }
-    @keyframes pdot { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .signout-btn { background: none; border: none; color: var(--text3); cursor: pointer; padding: 8px; border-radius: 10px; font-size: 20px; transition: color .2s; }
-    .signout-btn:hover { color: var(--text2); }
-
-    /* Messages */
-    .msgs { flex: 1; overflow-y: auto; padding: 16px 14px 8px; display: flex; flex-direction: column; gap: 2px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-    .msgs::-webkit-scrollbar { width: 3px; }
-    .msgs::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 3px; }
-
-    .empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 40px 20px; }
-    .empty-icon { font-size: 52px; }
-    .empty-t { font-family: var(--font-d); font-size: 22px; }
-    .empty-s { font-size: 14px; color: var(--text2); line-height: 1.5; }
-
-    .date-div { display: flex; align-items: center; gap: 10px; margin: 14px 0 10px; }
-    .date-div::before, .date-div::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .date-div span { font-size: 11px; color: var(--text3); font-weight: 500; white-space: nowrap; }
-
-    .brow { display: flex; align-items: flex-end; gap: 8px; animation: bin .25s ease; }
-    @keyframes bin { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-    .brow.me { flex-direction: row-reverse; }
-    .bav { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-bottom: 2px; }
-    .bav.mav { background: linear-gradient(135deg, var(--violet-mid), var(--violet-light)); color: #fff; }
-    .bav.tav { background: linear-gradient(135deg, var(--pink), #f472b6); color: #fff; }
-    .bubble { max-width: 72%; padding: 10px 14px; border-radius: 18px; font-size: 15px; line-height: 1.45; word-break: break-word; }
-    .bubble.me { background: linear-gradient(135deg, var(--violet-mid), #4f46e5); color: #fff; border-bottom-right-radius: 4px; }
-    .bubble.them { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 4px; }
-    .btime { font-size: 10px; margin-top: 4px; opacity: .55; }
-    .brow.me .btime { text-align: right; }
-
-    /* New msg pill */
-    .newpill { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--violet-mid); color: #fff; font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 20px; cursor: pointer; box-shadow: 0 4px 20px rgba(124,58,237,.5); display: none; z-index: 10; white-space: nowrap; animation: pin .2s ease; }
-    @keyframes pin { from{opacity:0;transform:translateX(-50%) translateY(8px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
-    .newpill.on { display: block; }
-
-    /* Input */
-    .input-area { flex-shrink: 0; background: var(--bg2); border-top: 1px solid var(--border); padding: 10px 12px; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
-    .quick-row { display: flex; gap: 8px; margin-bottom: 10px; }
-    .qbtn { flex: 1; padding: 9px 4px; background: var(--bg3); border: 1px solid var(--border); border-radius: 22px; font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background .15s, border-color .15s; white-space: nowrap; }
-    .qbtn:active { transform: scale(.97); }
-    .qbtn.am:hover { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.35); color: #fbbf24; }
-    .qbtn.ni:hover { background: rgba(109,40,217,.2); border-color: rgba(139,92,246,.4); color: var(--violet-light); }
-    .irow { display: flex; align-items: flex-end; gap: 10px; }
-    .ibox { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 22px; padding: 11px 16px; font-family: var(--font); font-size: 15px; color: var(--text); outline: none; resize: none; max-height: 120px; min-height: 44px; line-height: 1.4; transition: border-color .2s; -webkit-appearance: none; overflow-y: auto; }
-    .ibox::placeholder { color: var(--text3); }
-    .ibox:focus { border-color: var(--violet-light); box-shadow: 0 0 0 3px rgba(139,92,246,.12); }
-    .sbtn { width: 44px; height: 44px; background: linear-gradient(135deg, var(--violet-mid), var(--pink)); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 16px rgba(124,58,237,.45); transition: transform .15s; }
-    .sbtn:active { transform: scale(.92); }
-    .sbtn:disabled { opacity: .5; cursor: not-allowed; }
-    .sbtn svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-left: 2px; }
-
-    /* Modal */
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); display: flex; align-items: flex-end; z-index: 100; opacity: 0; pointer-events: none; transition: opacity .25s; }
-    .overlay.on { opacity: 1; pointer-events: all; }
-    .sheet { width: 100%; background: var(--bg2); border: 1px solid var(--border); border-radius: 24px 24px 0 0; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .3s cubic-bezier(.32,.72,0,1); }
-    .overlay.on .sheet { transform: translateY(0); }
-    .handle { width: 36px; height: 4px; background: var(--surface); border-radius: 2px; margin: 0 auto 20px; }
-    .sheet-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-    .sheet-sub { font-size: 14px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
-    .sheet-acts { display: flex; gap: 10px; }
-    .btn-ghost { flex: 1; padding: 13px; background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; font-family: var(--font); font-size: 15px; font-weight: 500; color: var(--text2); cursor: pointer; }
-    .btn-red { flex: 1; padding: 13px; background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3); border-radius: 14px; font-family: var(--font); font-size: 15px; font-weight: 600; color: #fca5a5; cursor: pointer; }
+    #chat{background:var(--bg)}
+    .ch{flex-shrink:0;background:var(--bg2);border-bottom:1px solid var(--br);padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));display:flex;align-items:center;gap:12px}
+    .avs{position:relative;width:50px;height:36px;flex-shrink:0}
+    .av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;position:absolute;border:2px solid var(--bg2)}
+    .av1{background:linear-gradient(135deg,var(--v),var(--vl));color:#fff;left:0;top:2px}
+    .av2{background:linear-gradient(135deg,var(--pk),#f472b6);color:#fff;left:18px;top:2px}
+    .hi{flex:1;min-width:0}
+    .hn{font-size:16px;font-weight:600}
+    .hs{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px;margin-top:2px}
+    .dot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pd 2s ease-in-out infinite}
+    @keyframes pd{0%,100%{opacity:1}50%{opacity:.4}}
+    .sob{background:none;border:none;color:var(--t3);cursor:pointer;padding:8px;border-radius:10px;font-size:20px;transition:color .2s}
+    .msgs{flex:1;overflow-y:auto;padding:16px 14px 8px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+    .msgs::-webkit-scrollbar{width:3px}
+    .msgs::-webkit-scrollbar-thumb{background:var(--sf);border-radius:3px}
+    .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:40px 20px}
+    .ei{font-size:52px}
+    .et{font-family:var(--fd);font-size:22px}
+    .es{font-size:14px;color:var(--t2);line-height:1.5}
+    .ddiv{display:flex;align-items:center;gap:10px;margin:14px 0 10px}
+    .ddiv::before,.ddiv::after{content:'';flex:1;height:1px;background:var(--br)}
+    .ddiv span{font-size:11px;color:var(--t3);font-weight:500;white-space:nowrap}
+    .brow{display:flex;align-items:flex-end;gap:8px;animation:bin .25s ease}
+    @keyframes bin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .brow.me{flex-direction:row-reverse}
+    .bav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-bottom:2px}
+    .mav{background:linear-gradient(135deg,var(--v),var(--vl));color:#fff}
+    .tav{background:linear-gradient(135deg,var(--pk),#f472b6);color:#fff}
+    .bbl{max-width:72%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.45;word-break:break-word}
+    .bbl.me{background:linear-gradient(135deg,var(--v),#4f46e5);color:#fff;border-bottom-right-radius:4px}
+    .bbl.them{background:var(--sf);border:1px solid var(--br);color:var(--t);border-bottom-left-radius:4px}
+    .bt{font-size:10px;margin-top:4px;opacity:.55}
+    .brow.me .bt{text-align:right}
+    .npill{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--v);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:20px;cursor:pointer;box-shadow:0 4px 20px rgba(124,58,237,.5);display:none;z-index:10;white-space:nowrap}
+    .npill.on{display:block}
+    .ia{flex-shrink:0;background:var(--bg2);border-top:1px solid var(--br);padding:10px 12px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+    .qrow{display:flex;gap:8px;margin-bottom:10px}
+    .qb{flex:1;padding:9px 4px;background:var(--bg3);border:1px solid var(--br);border-radius:22px;font-family:var(--fn);font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:background .15s,border-color .15s;white-space:nowrap}
+    .qb:active{transform:scale(.97)}
+    .qb.am:hover{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35);color:#fbbf24}
+    .qb.ni:hover{background:rgba(109,40,217,.2);border-color:rgba(139,92,246,.4);color:var(--vl)}
+    .irow{display:flex;align-items:flex-end;gap:10px}
+    .ibox{flex:1;background:var(--bg3);border:1px solid var(--br);border-radius:22px;padding:11px 16px;font-family:var(--fn);font-size:15px;color:var(--t);outline:none;resize:none;max-height:120px;min-height:44px;line-height:1.4;transition:border-color .2s;-webkit-appearance:none;overflow-y:auto}
+    .ibox::placeholder{color:var(--t3)}
+    .ibox:focus{border-color:var(--vl);box-shadow:0 0 0 3px rgba(139,92,246,.12)}
+    .sbtn{width:44px;height:44px;background:linear-gradient(135deg,var(--v),var(--pk));border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(124,58,237,.45);transition:transform .15s}
+    .sbtn:active{transform:scale(.92)}
+    .sbtn:disabled{opacity:.5;cursor:not-allowed}
+    .sbtn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-left:2px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:flex-end;z-index:100;opacity:0;pointer-events:none;transition:opacity .25s}
+    .overlay.on{opacity:1;pointer-events:all}
+    .sheet{width:100%;background:var(--bg2);border:1px solid var(--br);border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+    .overlay.on .sheet{transform:translateY(0)}
+    .handle{width:36px;height:4px;background:var(--sf);border-radius:2px;margin:0 auto 20px}
+    .st{font-size:17px;font-weight:600;margin-bottom:6px}
+    .ss{font-size:14px;color:var(--t2);margin-bottom:20px;line-height:1.5}
+    .sact{display:flex;gap:10px}
+    .bg{flex:1;padding:13px;background:var(--bg3);border:1px solid var(--br);border-radius:14px;font-family:var(--fn);font-size:15px;font-weight:500;color:var(--t2);cursor:pointer}
+    .br{flex:1;padding:13px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:14px;font-family:var(--fn);font-size:15px;font-weight:600;color:#fca5a5;cursor:pointer}
   </style>
 </head>
 <body>
 
-<!-- SPLASH -->
 <div class="screen" id="splash">
-  <div class="splash-logo">💕</div>
-  <div class="splash-title">Hello Baby</div>
-  <div class="spinner"></div>
+  <div class="slogo">💕</div>
+  <div class="stitle">Hello Baby</div>
+  <div class="spin"></div>
 </div>
 
-<!-- LOGIN -->
 <div class="screen hidden" id="login">
   <div class="card">
-    <div class="card-logo">💕</div>
-    <div class="card-title">Hello Baby</div>
-    <div class="card-sub">Your private little world</div>
-
+    <div class="clogo">💕</div>
+    <div class="ctitle">Hello Baby</div>
+    <div class="csub">Your private little world</div>
     <div class="fields">
-      <div class="name-wrap" id="nameWrap">
-        <div class="field-wrap">
-          <input type="text" id="nameInput" placeholder="Your name" autocomplete="name"/>
-        </div>
-      </div>
-      <div class="field-wrap">
-        <input type="email" id="emailInput" placeholder="Email address" autocomplete="email" autocapitalize="off"/>
-      </div>
-      <div class="field-wrap">
-        <input type="password" id="passInput" placeholder="Password" autocomplete="current-password"/>
-        <button class="eye-btn" id="eyeBtn" type="button">👁</button>
+      <div class="fw"><input type="text" id="nameInput" placeholder="Your name (new users only)" autocomplete="name"/></div>
+      <div class="fw"><input type="email" id="emailInput" placeholder="Email address" autocomplete="email" autocapitalize="off"/></div>
+      <div class="fw">
+        <input type="password" id="passInput" placeholder="Password (min 6 characters)" autocomplete="current-password"/>
+        <button class="eye" id="eyeBtn" type="button">👁</button>
       </div>
     </div>
-
-    <p class="hint" id="hintText">First time? Enter your email and choose a password.</p>
+    <p class="hint">New user? Fill in name + email + password.<br>Returning? Leave name blank, just email + password.</p>
     <div class="err" id="errBox"></div>
-
-    <button class="btn-main" id="authBtn">
-      <span class="blabel">Continue</span>
-      <div class="bspinner"></div>
+    <button class="btnm" id="authBtn">
+      <span class="bl">Continue</span>
+      <div class="bs"></div>
     </button>
-    <p class="card-foot">Made with love, just for two 💕</p>
+    <p class="cfoot">Made with love, just for two 💕</p>
   </div>
 </div>
 
-<!-- CHAT -->
 <div class="screen hidden" id="chat">
-  <div class="c-header">
+  <div class="ch">
     <div class="avs">
       <div class="av av1" id="myAv">P</div>
       <div class="av av2" id="theirAv">P</div>
     </div>
-    <div class="hinfo">
-      <div class="hname">Hello Baby</div>
-      <div class="hsub"><div class="dot"></div><span id="hsubText">Just the two of us</span></div>
+    <div class="hi">
+      <div class="hn">Hello Baby</div>
+      <div class="hs"><div class="dot"></div><span id="hsubText">Just the two of us</span></div>
     </div>
-    <button class="signout-btn" id="soBtn">↩</button>
+    <button class="sob" id="soBtn">↩</button>
   </div>
-
   <div class="msgs" id="msgs">
     <div class="empty" id="emptyState">
-      <div class="empty-icon">💌</div>
-      <div class="empty-t">No messages yet</div>
-      <div class="empty-s">Say something to start your story</div>
+      <div class="ei">💌</div>
+      <div class="et">No messages yet</div>
+      <div class="es">Say something to start your story</div>
     </div>
   </div>
-
-  <div class="newpill" id="newpill" onclick="scrollBottom()">↓ New message</div>
-
-  <div class="input-area">
-    <div class="quick-row">
-      <button class="qbtn am" onclick="send('☀️ Good Morning')">☀️ Good Morning</button>
-      <button class="qbtn ni" onclick="send('🌙 Good Night')">🌙 Good Night</button>
+  <div class="npill" id="newpill" onclick="scrollBottom()">↓ New message</div>
+  <div class="ia">
+    <div class="qrow">
+      <button class="qb am" onclick="send('☀️ Good Morning')">☀️ Good Morning</button>
+      <button class="qb ni" onclick="send('🌙 Good Night')">🌙 Good Night</button>
     </div>
     <div class="irow">
       <textarea class="ibox" id="msgBox" placeholder="Write a message…" rows="1"></textarea>
@@ -234,76 +179,46 @@
   </div>
 </div>
 
-<!-- SIGN OUT MODAL -->
 <div class="overlay" id="soModal">
   <div class="sheet">
     <div class="handle"></div>
-    <div class="sheet-title">Sign out?</div>
-    <div class="sheet-sub">You can always sign back in with your email and password.</div>
-    <div class="sheet-acts">
-      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn-red" onclick="doSignOut()">Sign Out</button>
+    <div class="st">Sign out?</div>
+    <div class="ss">You can always sign back in with your email and password.</div>
+    <div class="sact">
+      <button class="bg" onclick="closeModal()">Cancel</button>
+      <button class="br" onclick="doSignOut()">Sign Out</button>
     </div>
   </div>
 </div>
 
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ─── PASTE YOUR SUPABASE URL AND ANON KEY HERE ───────────────
-const SUPA_URL  = 'https://uwvfzqlzqhaskqhmmhzt.supabase.co';
-const SUPA_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3dmZ6cWx6cWhhc2txaG1taHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDI3MzcsImV4cCI6MjA4OTE3ODczN30.nSw-f9FgGZp0YqhvzP3Kwb3KeNBs2oA4vFDaro1tWqE';
-// ─────────────────────────────────────────────────────────────
-
+const SUPA_URL = 'https://uwvfzqlzqhaskqhmmhzt.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3dmZ6cWx6cWhhc2txaG1taHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDI3MzcsImV4cCI6MjA4OTE3ODczN30.nSw-f9FgGZp0YqhvzP3Kwb3KeNBs2oA4vFDaro1tWqE';
 const MAX_USERS = 6;
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-// DOM
-const S  = id => document.getElementById(id);
-const splash    = S('splash');
-const loginScr  = S('login');
-const chatScr   = S('chat');
-const emailEl   = S('emailInput');
-const passEl    = S('passInput');
-const nameEl    = S('nameInput');
-const nameWrap  = S('nameWrap');
-const hintEl    = S('hintText');
-const authBtn   = S('authBtn');
-const errBox    = S('errBox');
-const eyeBtn    = S('eyeBtn');
-const msgsEl    = S('msgs');
-const emptyEl   = S('emptyState');
-const msgBox    = S('msgBox');
-const sendBtn   = S('sendBtn');
-const hsubText  = S('hsubText');
-const myAv      = S('myAv');
-const theirAv   = S('theirAv');
-const newpill   = S('newpill');
-const soModal   = S('soModal');
+const S = id => document.getElementById(id);
+const splash   = S('splash'), loginScr = S('login'), chatScr = S('chat');
+const emailEl  = S('emailInput'), passEl = S('passInput'), nameEl = S('nameInput');
+const authBtn  = S('authBtn'), errBox = S('errBox'), eyeBtn = S('eyeBtn');
+const msgsEl   = S('msgs'), emptyEl = S('emptyState'), msgBox = S('msgBox');
+const sendBtn  = S('sendBtn'), hsubText = S('hsubText');
+const myAv     = S('myAv'), theirAv = S('theirAv');
+const newpill  = S('newpill'), soModal = S('soModal');
 
-let currentUser  = null;
-let msgChannel   = null;
-let isAtBottom   = true;
-let allMessages  = [];
+let currentUser = null, msgChannel = null, isAtBottom = true;
 
-// ── SCREENS ────────────────────────────────────
 function show(scr) {
-  [splash, loginScr, chatScr].forEach(s =>
-    s.classList.toggle('hidden', s !== scr));
+  [splash, loginScr, chatScr].forEach(s => s.classList.toggle('hidden', s !== scr));
 }
 
-// ── INIT ───────────────────────────────────────
-async function init() {
+// Init
+(async () => {
   const { data: { session } } = await sb.auth.getSession();
-  if (session?.user) {
-    currentUser = session.user;
-    await loadChat();
-    show(chatScr);
-  } else {
-    show(loginScr);
-  }
-}
-init();
+  if (session?.user) { currentUser = session.user; await loadChat(); show(chatScr); }
+  else show(loginScr);
+})();
 
 sb.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session?.user) {
@@ -314,45 +229,24 @@ sb.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_OUT') {
     currentUser = null;
     if (msgChannel) { sb.removeChannel(msgChannel); msgChannel = null; }
-    allMessages = [];
-    msgsEl.querySelectorAll('.brow, .date-div').forEach(e => e.remove());
+    msgsEl.querySelectorAll('.brow,.ddiv').forEach(e => e.remove());
     emptyEl.style.display = 'flex';
     show(loginScr);
   }
 });
 
-// ── EYE TOGGLE ─────────────────────────────────
+// Eye toggle
 eyeBtn.addEventListener('click', () => {
-  const isP = passEl.type === 'password';
-  passEl.type = isP ? 'text' : 'password';
-  eyeBtn.textContent = isP ? '🙈' : '👁';
+  const p = passEl.type === 'password';
+  passEl.type = p ? 'text' : 'password';
+  eyeBtn.textContent = p ? '🙈' : '👁';
 });
 
-// ── DETECT NEW USER ────────────────────────────
-emailEl.addEventListener('blur', async () => {
-  const email = emailEl.value.trim().toLowerCase();
-  if (!email.includes('@')) return;
-  // Try a dummy sign-in to check if user exists
-  const { error } = await sb.auth.signInWithPassword({ email, password: '________' });
-  const isNew = error?.message?.includes('Invalid login credentials') === false
-    && error?.code === 'invalid_credentials' === false
-    && (error?.message?.includes('Email not confirmed') || error?.message?.includes('Invalid login') || !error);
-
-  // Simpler check: if error says user not found vs wrong password
-  const notFound = error?.message?.toLowerCase().includes('user') ||
-                   error?.message?.toLowerCase().includes('not found') ||
-                   error?.status === 400;
-
-  // Just show name field always for safety — user can skip if existing
-  nameWrap.classList.add('on');
-  authBtn.querySelector('.blabel').textContent = 'Continue';
-  hintEl.textContent = 'Enter your name if you are new, or leave blank to sign in.';
-});
-
-// ── AUTH ───────────────────────────────────────
+// Error helpers
 function showErr(msg) { errBox.textContent = msg; errBox.classList.add('on'); }
 function clearErr()   { errBox.classList.remove('on'); }
 
+// AUTH — clean simple flow
 authBtn.addEventListener('click', handleAuth);
 passEl.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
 
@@ -361,241 +255,170 @@ async function handleAuth() {
   const pass  = passEl.value.trim();
   const name  = nameEl.value.trim();
 
-  if (!email.includes('@')) return showErr('Please enter a valid email address.');
-  if (pass.length < 6)      return showErr('Password must be at least 6 characters.');
+  if (!email || !email.includes('@')) return showErr('Please enter a valid email address.');
+  if (pass.length < 6) return showErr('Password must be at least 6 characters.');
 
   clearErr();
   authBtn.disabled = true;
   authBtn.classList.add('loading');
 
-  // Try sign in first
-  const { data: signInData, error: signInErr } = await sb.auth.signInWithPassword({ email, password: pass });
-
-  if (!signInErr) {
-    // Signed in successfully
-    authBtn.disabled = false;
-    authBtn.classList.remove('loading');
-    return;
-  }
-
-  // Sign in failed — try to register
-  if (signInErr) {
-    // Check user count
-    const { count } = await sb.from('users').select('*', { count: 'exact', head: true });
-    if (count >= MAX_USERS) {
-      authBtn.disabled = false;
-      authBtn.classList.remove('loading');
-      return showErr(`This app is full (${MAX_USERS}/${MAX_USERS} users). No new registrations allowed.`);
+  try {
+    if (name) {
+      // Name filled = new user wants to register
+      await registerUser(email, pass, name);
+    } else {
+      // No name = returning user sign in
+      const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+      if (error) {
+        if (error.message.toLowerCase().includes('invalid') ||
+            error.message.toLowerCase().includes('credentials')) {
+          showErr('Incorrect password, or enter your name above to create a new account.');
+        } else {
+          showErr(error.message);
+        }
+      }
     }
-
-    const displayName = name || email.split('@')[0];
-
-    const { data: signUpData, error: signUpErr } = await sb.auth.signUp({
-      email,
-      password: pass,
-      options: { data: { display_name: displayName } }
-    });
-
-    if (signUpErr) {
-      authBtn.disabled = false;
-      authBtn.classList.remove('loading');
-      return showErr(signUpErr.message || 'Could not create account. Please try again.');
-    }
-
-    // Write to users table
-    if (signUpData.user) {
-      await sb.from('users').insert({
-        id:           signUpData.user.id,
-        email:        email,
-        display_name: displayName,
-        joined_at:    new Date().toISOString(),
-        user_number:  (count || 0) + 1,
-      });
-    }
+  } catch(e) {
+    showErr('Something went wrong. Please try again.');
+    console.error(e);
   }
 
   authBtn.disabled = false;
   authBtn.classList.remove('loading');
 }
 
-// ── CHAT INIT ──────────────────────────────────
+async function registerUser(email, pass, name) {
+  // Check user count
+  const { count } = await sb.from('users').select('*', { count: 'exact', head: true });
+  if (count >= MAX_USERS) {
+    return showErr('This app is full. No new registrations allowed.');
+  }
+
+  const { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { display_name: name } } });
+
+  if (error) {
+    if (error.message.toLowerCase().includes('already registered') ||
+        error.message.toLowerCase().includes('already been registered')) {
+      // Account exists — try to sign in instead
+      const { error: siErr } = await sb.auth.signInWithPassword({ email, password: pass });
+      if (siErr) showErr('Account exists but password is wrong. Leave name blank and try again.');
+    } else {
+      showErr(error.message);
+    }
+    return;
+  }
+
+  // Save to users table
+  if (data?.user) {
+    await sb.from('users').upsert({
+      id: data.user.id, email, display_name: name,
+      joined_at: new Date().toISOString(), user_number: (count || 0) + 1,
+    });
+  }
+}
+
+// CHAT
 async function loadChat() {
-  const meta = currentUser.user_metadata;
-  const name = meta?.display_name || currentUser.email.split('@')[0];
-  hsubText.textContent = `Hi, ${name}`;
+  const name = currentUser.user_metadata?.display_name || currentUser.email.split('@')[0];
+  hsubText.textContent = 'Hi, ' + name;
   myAv.textContent = name.charAt(0).toUpperCase();
 
-  // Get partner initial
-  const { data: users } = await sb.from('users').select('display_name, id');
+  const { data: users } = await sb.from('users').select('display_name,id');
   if (users) {
     const partner = users.find(u => u.id !== currentUser.id);
-    if (partner?.display_name) {
-      theirAv.textContent = partner.display_name.charAt(0).toUpperCase();
-    }
+    if (partner?.display_name) theirAv.textContent = partner.display_name.charAt(0).toUpperCase();
   }
 
   await loadMessages();
   subscribeMessages();
 }
 
-// ── LOAD MESSAGES ──────────────────────────────
 async function loadMessages() {
-  const { data } = await sb.from('messages')
-    .select('*')
-    .order('created_at', { ascending: true });
-
-  if (!data || data.length === 0) {
-    emptyEl.style.display = 'flex';
-    return;
-  }
-
+  const { data } = await sb.from('messages').select('*').order('created_at', { ascending: true });
+  if (!data || !data.length) { emptyEl.style.display = 'flex'; return; }
   emptyEl.style.display = 'none';
-  msgsEl.querySelectorAll('.brow, .date-div').forEach(e => e.remove());
-  allMessages = data;
-
-  let prevDate = null;
+  msgsEl.querySelectorAll('.brow,.ddiv').forEach(e => e.remove());
+  let prev = null;
   data.forEach(msg => {
     const ts = new Date(msg.created_at);
-    if (!isSameDay(ts, prevDate)) {
-      appendDateDiv(fmtDate(ts));
-      prevDate = ts;
-    }
-    appendBubble(msg, false);
+    if (!sameDay(ts, prev)) { addDateDiv(fmtDate(ts)); prev = ts; }
+    addBubble(msg, false);
   });
-
   setTimeout(() => scrollBottom(false), 50);
 }
 
-// ── REALTIME ───────────────────────────────────
 function subscribeMessages() {
-  msgChannel = sb.channel('messages-channel')
-    .on('postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'messages' },
-      payload => {
-        const msg = payload.new;
-        emptyEl.style.display = 'none';
-
-        // Date divider if new day
-        const ts = new Date(msg.created_at);
-        const lastDiv = msgsEl.querySelectorAll('.date-div');
-        const lastDivDate = lastDiv.length
-          ? new Date(lastDiv[lastDiv.length-1].dataset.date)
-          : null;
-        if (!isSameDay(ts, lastDivDate)) appendDateDiv(fmtDate(ts));
-
-        appendBubble(msg, true);
-
-        if (isAtBottom) scrollBottom();
-        else if (msg.user_id !== currentUser.id) newpill.classList.add('on');
-      }
-    )
+  msgChannel = sb.channel('msgs')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, ({ new: msg }) => {
+      emptyEl.style.display = 'none';
+      const ts = new Date(msg.created_at);
+      const divs = msgsEl.querySelectorAll('.ddiv');
+      const lastDate = divs.length ? new Date(divs[divs.length-1].dataset.date) : null;
+      if (!sameDay(ts, lastDate)) addDateDiv(fmtDate(ts));
+      addBubble(msg, true);
+      if (isAtBottom) scrollBottom();
+      else if (msg.user_id !== currentUser.id) newpill.classList.add('on');
+    })
     .subscribe();
 }
 
-// ── SEND ───────────────────────────────────────
 async function send(text) {
-  const trimmed = text.trim();
-  if (!trimmed || !currentUser) return;
-
-  const meta = currentUser.user_metadata;
-  const name = meta?.display_name || currentUser.email.split('@')[0];
-
-  sendBtn.disabled = true;
-  const { error } = await sb.from('messages').insert({
-    user_id:      currentUser.id,
-    sender_email: currentUser.email,
-    sender_name:  name,
-    text:         trimmed,
-    created_at:   new Date().toISOString(),
-  });
-  sendBtn.disabled = false;
-  if (error) console.error('Send error:', error);
+  const t = text.trim();
+  if (!t || !currentUser) return;
+  const name = currentUser.user_metadata?.display_name || currentUser.email.split('@')[0];
+  await sb.from('messages').insert({ user_id: currentUser.id, sender_email: currentUser.email, sender_name: name, text: t, created_at: new Date().toISOString() });
 }
 
 function sendFromInput() {
-  const text = msgBox.value;
-  if (!text.trim()) return;
-  msgBox.value = '';
-  msgBox.style.height = 'auto';
-  send(text);
+  const t = msgBox.value;
+  if (!t.trim()) return;
+  msgBox.value = ''; msgBox.style.height = 'auto';
+  send(t);
 }
 
-msgBox.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFromInput(); }
-});
-msgBox.addEventListener('input', () => {
-  msgBox.style.height = 'auto';
-  msgBox.style.height = Math.min(msgBox.scrollHeight, 120) + 'px';
-});
+msgBox.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFromInput(); } });
+msgBox.addEventListener('input', () => { msgBox.style.height = 'auto'; msgBox.style.height = Math.min(msgBox.scrollHeight, 120) + 'px'; });
 
-// ── RENDER ─────────────────────────────────────
-function appendDateDiv(label) {
-  if (!label) return;
+function addDateDiv(label) {
   const d = document.createElement('div');
-  d.className = 'date-div';
-  d.dataset.date = label;
-  d.innerHTML = `<span>${label}</span>`;
+  d.className = 'ddiv'; d.dataset.date = label;
+  d.innerHTML = '<span>' + label + '</span>';
   msgsEl.appendChild(d);
 }
 
-function appendBubble(msg, animate) {
+function addBubble(msg, animate) {
   const isMe = msg.user_id === currentUser.id || msg.sender_email === currentUser.email;
   const ts   = new Date(msg.created_at);
   const name = msg.sender_name || msg.sender_email?.split('@')[0] || '?';
-  const init = name.charAt(0).toUpperCase();
-
-  const row = document.createElement('div');
-  row.className = `brow ${isMe ? 'me' : ''}`;
+  const row  = document.createElement('div');
+  row.className = 'brow' + (isMe ? ' me' : '');
   if (!animate) row.style.animation = 'none';
-  row.innerHTML = `
-    <div class="bav ${isMe ? 'mav' : 'tav'}">${init}</div>
-    <div>
-      <div class="bubble ${isMe ? 'me' : 'them'}">${esc(msg.text)}</div>
-      <div class="btime">${fmtTime(ts)}</div>
-    </div>`;
+  row.innerHTML = '<div class="bav ' + (isMe ? 'mav' : 'tav') + '">' + name.charAt(0).toUpperCase() + '</div><div><div class="bbl ' + (isMe ? 'me' : 'them') + '">' + esc(msg.text) + '</div><div class="bt">' + fmtTime(ts) + '</div></div>';
   msgsEl.appendChild(row);
 }
 
-function esc(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-          .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
-}
-function fmtTime(d) {
-  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function fmtTime(d) { return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
 function fmtDate(d) {
-  const now   = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const day   = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const diff  = (today - day) / 86400000;
-  if (diff === 0) return 'Today';
-  if (diff === 1) return 'Yesterday';
+  const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const day = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const diff = (today - day) / 86400000;
+  if (diff === 0) return 'Today'; if (diff === 1) return 'Yesterday';
   return d.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' });
 }
-function isSameDay(a, b) {
-  if (!a || !b) return false;
-  return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
-}
+function sameDay(a, b) { return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
 
-// ── SCROLL ─────────────────────────────────────
 msgsEl.addEventListener('scroll', () => {
   const { scrollTop, scrollHeight, clientHeight } = msgsEl;
   isAtBottom = scrollHeight - scrollTop - clientHeight < 60;
   if (isAtBottom) newpill.classList.remove('on');
 });
-function scrollBottom(smooth = true) {
-  msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: smooth ? 'smooth' : 'instant' });
-  newpill.classList.remove('on');
-}
+function scrollBottom(smooth = true) { msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: smooth ? 'smooth' : 'instant' }); newpill.classList.remove('on'); }
 
-// ── SIGN OUT ───────────────────────────────────
 S('soBtn').addEventListener('click', () => soModal.classList.add('on'));
 function closeModal() { soModal.classList.remove('on'); }
 soModal.addEventListener('click', e => { if (e.target === soModal) closeModal(); });
-async function doSignOut() {
-  closeModal();
-  await sb.auth.signOut();
-}
+async function doSignOut() { closeModal(); await sb.auth.signOut(); }
 </script>
 </body>
 </html>

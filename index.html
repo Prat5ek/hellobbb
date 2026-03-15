@@ -403,9 +403,11 @@ function show(scr) {
 }
 
 // ── INIT ──────────────────────────────────────
+const initTimer = setTimeout(() => { clearTimeout(initTimer); show(lgScr); }, 4000);
 (async () => {
   try {
     const { data: { session } } = await sb.auth.getSession();
+    clearTimeout(initTimer);
     if (session?.user) {
       me = session.user;
       show(chScr);
@@ -414,6 +416,7 @@ function show(scr) {
       show(lgScr);
     }
   } catch(e) {
+    clearTimeout(initTimer);
     show(lgScr);
   }
 })();
